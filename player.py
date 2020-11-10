@@ -16,7 +16,7 @@ class Player:
             and self.state == "GROUNDED"):
             self.state = "AIRBORNE"
             self.y -= 1
-            self.yvel = 1000
+            self.yvel = PLAYER_JUMP_VELOCITY
 
     def update(self, platforms, dt):
 
@@ -48,7 +48,7 @@ class Player:
         if keymap[pg.K_LEFT]:
             dx = -1 * self.speed * dt
         if self.state == "AIRBORNE":
-            dx *= 1.3
+            dx *= 0.7
 
         self.x += dx
         if (self.x - self.w//2) < 0:
@@ -70,7 +70,7 @@ class Player:
 
 
     def draw(self, surf):
-        pg.draw.rect( surf, WHITE if self.state== "AIRBORNE" else GREEN, 
+        pg.draw.rect( surf, WHITE if self.state == "AIRBORNE" else GREEN, 
             pg.Rect(    int(self.x - self.w//2),
                         int(self.y - self.h),
                         self.w,self.h), 1)

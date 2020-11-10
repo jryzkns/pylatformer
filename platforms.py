@@ -26,7 +26,6 @@ class BackForthMovingPlatform(Platform):
         self.prev_x, self.prev_y = self.center_x, self.center_y
         self.dx, self.dy = 0, 0
 
- 
     def update(self, dt):
         self.time += dt
         self.x = self.center_x + (self.R - self.L - self.w)/2 * math.sin(self.hspeed * self.time) - self.w/2
@@ -68,7 +67,9 @@ class Platforms(list):
         self.append(Platform(0, res[1], res[0], 0))
         
         self.platforms_path = platforms_path
+        self.stationary_canvas = pg.Surface(res)
         self.init_platforms()
+
 
     def init_platforms(self):
         with open(self.platforms_path, "r") as f__:
@@ -83,9 +84,16 @@ class Platforms(list):
                 elif platform_type == CPLAT:
                     self.append(CircleMovingPlatform(*platform_data))
 
+        self.static_platforms = [ p for p in self[1:] if not p.ismoving ]
+        for p in self.static_platforms:
+            p.draw(self.stationary_canvas)
+        self.dynamic_platforms = [ p for p in self[1:] if p.ismoving ]
 
     def update(self, dt):
-        for x in self: x.update(dt)
+        for x in self.dynamic_platforms:
+            x.update(dt)
 
     def draw(self, surf):
-        for x in self[1:]: x.draw(surf)
+        surf.blit(self.stationary_canvas,(0,0))
+        for x in self.dynamic_platforms:
+            x.draw(surf)

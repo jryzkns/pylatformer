@@ -15,7 +15,7 @@ running, paused, dt = True, False, 0
 game_clock = pg.time.Clock()
 game_clock.tick()
 
-player    = Player(100, 300, 20, 35, 150)
+player    = Player(100, 300, 5, 15, 150)
 platforms = Platforms('lvl1.platforms')
 
 while running:
@@ -39,7 +39,7 @@ while running:
         player    .update(platforms, dt)
   
     # draws
-    game_win.fill((0,0,0))
+    game_win.fill(BLACK)
 
     platforms .draw(game_win)
     player    .draw(game_win)
