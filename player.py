@@ -11,12 +11,25 @@ class Player:
         self.yvel = 0
         self.state = "GROUNDED"
 
+        self.hitbox = pg.Rect(    
+            int(self.x - self.w//2),
+            int(self.y - self.h),
+            self.w, self.h)
+
+        self.target = None
+
     def on_keydown(self, key):
         if (key == pg.K_UP 
             and self.state == "GROUNDED"):
             self.state = "AIRBORNE"
             self.y -= 1
             self.yvel = PLAYER_JUMP_VELOCITY
+
+        elif (key == pg.K_y
+                and self.hitbox.colliderect(self.target.hitbox)):
+            print("hit")
+            # TODO: now we can add some signal that tells other objects
+            # that the level is done!
 
     def update(self, platforms, dt):
 
@@ -68,9 +81,12 @@ class Player:
             self.yvel = 0
             self.y = self.ground
 
+        self.hitbox = pg.Rect(    
+            int(self.x - self.w//2),
+            int(self.y - self.h),
+            self.w, self.h)
 
     def draw(self, surf):
-        pg.draw.rect( surf, WHITE if self.state == "AIRBORNE" else GREEN, 
-            pg.Rect(    int(self.x - self.w//2),
-                        int(self.y - self.h),
-                        self.w,self.h), 1)
+        pg.draw.rect( surf, 
+            WHITE if self.state == "AIRBORNE" else GREEN, 
+            self.hitbox, 1)

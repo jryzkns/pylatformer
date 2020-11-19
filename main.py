@@ -1,12 +1,11 @@
 # PYGAME BOILERPLATE CODE
 # JRYZKNS 2019
 
-# TODO: how to optimize platform drawing
-
 import pygame as pg
 from game_context import *
 from player import Player
 from platforms import Platforms
+from trophy import Trophy
 
 pg.init()
 game_win = pg.display.set_mode(res)
@@ -16,7 +15,10 @@ game_clock = pg.time.Clock()
 game_clock.tick()
 
 player    = Player(100, 300, 5, 15, 150)
+trophy    = Trophy(470, 80, 15, 45)
 platforms = Platforms('lvl1.platforms')
+
+player.target = trophy
 
 while running:
 
@@ -34,7 +36,6 @@ while running:
     dt = game_clock.get_time()/1000.
 
     if not paused:
-        
         platforms .update(dt)
         player    .update(platforms, dt)
   
@@ -43,6 +44,7 @@ while running:
 
     platforms .draw(game_win)
     player    .draw(game_win)
+    trophy    .draw(game_win)
 
     pg.display.flip()
     game_clock.tick()

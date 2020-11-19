@@ -25,11 +25,15 @@ class BackForthMovingPlatform(Platform):
         self.ismoving = True
         self.prev_x, self.prev_y = self.center_x, self.center_y
         self.dx, self.dy = 0, 0
+        self.hspan = (self.R - self.L - self.w)/2
+        self.vspan = (self.T - self.B)/2
+        self.offset_x = self.w/2
 
     def update(self, dt):
+
         self.time += dt
-        self.x = self.center_x + (self.R - self.L - self.w)/2 * math.sin(self.hspeed * self.time) - self.w/2
-        self.y = self.center_y + (self.T - self.B)/2 * math.sin(self.vspeed * self.time)
+        self.x = self.center_x + self.hspan * math.sin(self.hspeed * self.time) - self.offset_x
+        self.y = self.center_y + self.vspan * math.sin(self.vspeed * self.time)
 
         self.dx = self.x - self.prev_x
         self.dy = self.y - self.prev_y
@@ -49,11 +53,14 @@ class CircleMovingPlatform(Platform):
         self.ismoving = True
         self.prev_x, self.prev_y = self.center_x, self.center_y
         self.dx, self.dy = 0, 0
+        self.hspan = (self.R - self.L - self.w)/2
+        self.vspan = (self.T - self.B)/2
+        self.offset_x = self.w/2
 
     def update(self, dt):
         self.time += dt
-        self.x = self.center_x + (self.R - self.L - self.w)/2 * math.sin(self.hspeed * self.time) - self.w/2
-        self.y = self.center_y + (self.T - self.B)/2 * math.cos(self.vspeed * self.time)
+        self.x = self.center_x + self.hspan * math.sin(self.hspeed * self.time) - self.offset_x
+        self.y = self.center_y + self.vspan * math.cos(self.vspeed * self.time)
 
         self.dx = self.x - self.prev_x
         self.dy = self.y - self.prev_y
@@ -69,7 +76,6 @@ class Platforms(list):
         self.platforms_path = platforms_path
         self.stationary_canvas = pg.Surface(res)
         self.init_platforms()
-
 
     def init_platforms(self):
         with open(self.platforms_path, "r") as f__:
